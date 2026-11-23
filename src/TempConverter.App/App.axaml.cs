@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
 using TempConverter.App.ViewModels;
 using TempConverter.App.Views;
 
@@ -17,12 +18,18 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            IServiceProvider services = BuildServices();
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainViewModel(),
+                DataContext = services.GetRequiredService<MainViewModel>(),
             };
         }
 
         base.OnFrameworkInitializationCompleted();
     }
+
+    private static ServiceProvider BuildServices() =>
+        new ServiceCollection()
+            .AddSingleton<MainViewModel>()
+            .BuildServiceProvider();
 }
