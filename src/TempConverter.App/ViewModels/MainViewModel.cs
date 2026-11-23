@@ -1,4 +1,3 @@
-using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using TempConverter.Core;
 
@@ -21,8 +20,8 @@ public partial class MainViewModel : ViewModelBase
     public IReadOnlyList<TemperatureScale> AvailableScales { get; } = Enum.GetValues<TemperatureScale>();
 
     public string Result =>
-        TemperatureValidator.Validate(Input, SourceScale) == TemperatureValidationOutcome.Valid
-            && double.TryParse(Input.Replace(',', '.'), CultureInfo.InvariantCulture, out double value)
+        TemperatureValidator.TryParseValue(Input, out double value)
+            && TemperatureValidator.Validate(value, SourceScale) == TemperatureValidationOutcome.Valid
             ? TemperatureFormatter.Format(TemperatureConverter.Convert(value, SourceScale, TargetScale))
             : string.Empty;
 
@@ -31,6 +30,7 @@ public partial class MainViewModel : ViewModelBase
             ? string.Empty
             : TemperatureValidator.Validate(Input, SourceScale) switch
             {
+                TemperatureValidationOutcome.Valid => string.Empty,
                 TemperatureValidationOutcome.NotANumber => "Enter a valid number.",
                 TemperatureValidationOutcome.BelowAbsoluteZero =>
                     $"Below absolute zero (minimum {TemperatureFormatter.Format(SourceScale.GetAbsoluteZeroMinimum())} {SourceScale.GetSymbol()}).",

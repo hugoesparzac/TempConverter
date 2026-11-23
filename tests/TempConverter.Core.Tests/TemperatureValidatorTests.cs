@@ -13,6 +13,17 @@ public class TemperatureValidatorTests
     }
 
     [Theory]
+    [InlineData("NaN")]
+    [InlineData("Infinity")]
+    [InlineData("-Infinity")]
+    public void Validate_WhenTextIsNonFiniteNumber_ReturnsNotANumber(string text)
+    {
+        TemperatureValidationOutcome actual = TemperatureValidator.Validate(text, TemperatureScale.Celsius);
+
+        Assert.Equal(TemperatureValidationOutcome.NotANumber, actual);
+    }
+
+    [Theory]
     [InlineData(TemperatureScale.Celsius, "-300")]
     [InlineData(TemperatureScale.Fahrenheit, "-500")]
     [InlineData(TemperatureScale.Kelvin, "-1")]
@@ -42,6 +53,11 @@ public class TemperatureValidatorTests
     [InlineData(TemperatureScale.Celsius, "36,6")]
     [InlineData(TemperatureScale.Fahrenheit, "-400")]
     [InlineData(TemperatureScale.Kelvin, "300.5")]
+    [InlineData(TemperatureScale.Celsius, " 37")]
+    [InlineData(TemperatureScale.Celsius, "37 ")]
+    [InlineData(TemperatureScale.Celsius, ".5")]
+    [InlineData(TemperatureScale.Celsius, "5.")]
+    [InlineData(TemperatureScale.Celsius, "+5")]
     public void Validate_WhenValueIsAtOrAboveMinimum_ReturnsValid(TemperatureScale scale, string text)
     {
         TemperatureValidationOutcome actual = TemperatureValidator.Validate(text, scale);

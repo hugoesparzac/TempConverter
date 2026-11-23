@@ -68,4 +68,25 @@ public class MainViewModelValidationTests
         Assert.Equal(string.Empty, viewModel.ErrorMessage);
         Assert.Equal("-459.67", viewModel.Result);
     }
+
+    [Fact]
+    public void Result_WhenInputHasSurroundingWhitespace_ConvertsAndShowsNoMessage()
+    {
+        var viewModel = new MainViewModel
+        {
+            Input = " 37 "
+        };
+
+        Assert.Equal("98.6", viewModel.Result);
+        Assert.Equal(string.Empty, viewModel.ErrorMessage);
+    }
+
+    [Fact]
+    public void ErrorMessage_WhenInputEmpty_ShowsNoMessageAndNoResult()
+    {
+        var viewModel = new MainViewModel();
+
+        Assert.Equal(string.Empty, viewModel.ErrorMessage);
+        Assert.Equal(string.Empty, viewModel.Result);
+    }
 }
