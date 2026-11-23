@@ -1,0 +1,38 @@
+name: "tempconverter"
+arch: "amd64"
+platform: "linux"
+version: "${VERSION}"
+section: "utils"
+priority: "optional"
+maintainer: "Hugo Esparza Castañeda <hugoesparzac@users.noreply.github.com>"
+description: "Cross-platform desktop temperature converter built with .NET 10 and Avalonia UI"
+homepage: "https://github.com/hugoesparzac/TempConverter"
+license: "MIT"
+
+overrides:
+  deb:
+    depends:
+      - libfontconfig1
+      - libx11-6
+  rpm:
+    depends:
+      - fontconfig
+      - libX11
+  archlinux:
+    depends:
+      - fontconfig
+      - libx11
+
+contents:
+  - src: ./artifacts/publish/linux-x64/TempConverter
+    dst: /usr/bin/tempconverter
+    file_info:
+      mode: 0755
+  - src: ./artifacts/publish/linux-x64/tempconverter.desktop
+    dst: /usr/share/applications/tempconverter.desktop
+    file_info:
+      mode: 0644
+  - src: ./src/TempConverter.App/Assets/app-icon.png
+    dst: /usr/share/icons/hicolor/256x256/apps/tempconverter.png
+    file_info:
+      mode: 0644

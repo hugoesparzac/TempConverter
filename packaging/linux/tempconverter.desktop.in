@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=TempConverter
+Comment=Cross-platform desktop temperature converter
+Exec="@EXEC@"
+Icon=@ICON@
+Terminal=false
+Categories=Utility;Science;
+StartupWMClass=TempConverter

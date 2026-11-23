@@ -1,0 +1,46 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+MSG_FILE=$1
+
+# Ignore Git comment lines (#) and strip carriage returns (\r)
+CLEAN_MSG=$(grep -v '^#' "$MSG_FILE" | tr -d '\r')
+
+COMMIT_TITLE=$(echo "$CLEAN_MSG" | sed -n '1p')
+SECOND_LINE=$(echo "$CLEAN_MSG" | sed -n '2p')
+
+PATTERN="^(feat|fix|docs|style|refactor|perf|test|chore|ci)(\([a-zA-Z0-9_-]+\))?!?: [a-zA-Z0-9].{0,72}$"
+
+if ! echo "$COMMIT_TITLE" | grep -Eq "$PATTERN"; then
+    echo "======================================================="
+    echo "❌ ERROR: Commit title does not follow Conventional Commits."
+    echo "======================================================="
+    echo "💡 Correct format: <type>(<optional-scope>): <short description>"
+    echo ""
+    echo "Allowed types: feat, fix, docs, style, refactor, perf, test, chore, ci"
+    echo "Max title length: 72 characters."
+    echo ""
+    echo "✅ Valid examples:"
+    echo "  feat: add user endpoints"
+    echo "  feat(auth): integrate discord login"
+    echo "  fix(database): fix initial data seed"
+    echo "  refactor: clean up dependency injection"
+    echo "======================================================="
+    exit 1
+fi
+
+if [ -n "$SECOND_LINE" ]; then
+    echo "======================================================="
+    echo "❌ ERROR: Missing a blank line after the commit title."
+    echo "======================================================="
+    echo "💡 When adding a commit body or bullet points, leave"
+    echo "   the second line completely empty."
+    echo ""
+    echo "✅ Valid example:"
+    echo "  feat(auth): integrate discord login"
+    echo ""
+    echo "  - Add Discord provider"
+    echo "  - Configure JWT generation"
+    echo "======================================================="
+    exit 1
+fi

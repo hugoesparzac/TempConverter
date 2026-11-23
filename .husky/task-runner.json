@@ -1,0 +1,30 @@
+{
+  "tasks": [
+    {
+      "name": "dotnet-format-whitespace-staged",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": ["format", "whitespace", "--include", "${staged}"],
+      "include": ["**/*.cs"]
+    },
+    {
+      "name": "dotnet-format-style-staged",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": ["format", "style", "--include", "${staged}"],
+      "include": ["**/*.cs"]
+    },
+    {
+      "name": "dotnet-format-analyzers",
+      "group": "pre-push",
+      "command": "dotnet",
+      "args": ["format", "analyzers", "--verify-no-changes"]
+    },
+    {
+      "name": "dotnet-build-check",
+      "group": "pre-push",
+      "command": "dotnet",
+      "args": ["build", "--no-restore"]
+    }
+  ]
+}

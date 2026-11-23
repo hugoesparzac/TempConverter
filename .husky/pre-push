@@ -1,0 +1,26 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+PATTERN="^(main|develop|dependabot\/[a-zA-Z0-9._\/-]+|(feat|fix|docs|style|refactor|perf|test|chore|ci|hotfix)\/[a-z0-9-]+)$"
+
+if ! echo "$BRANCH_NAME" | grep -Eq "$PATTERN"; then
+    echo "======================================================="
+    echo "❌ ERROR: Invalid branch name ('$BRANCH_NAME')."
+    echo "======================================================="
+    echo "💡 Expected format: <type>/<kebab-case-description>"
+    echo ""
+    echo "Allowed types: feat, fix, docs, style, refactor, perf, test, chore, ci, hotfix"
+    echo ""
+    echo "✅ Valid examples:"
+    echo "  feat/user-authentication"
+    echo "  fix/null-reference-order"
+    echo "  hotfix/token-expiration"
+    echo ""
+    echo "🔧 To rename your current branch, run:"
+    echo "  git branch -m <new-branch-name>"
+    echo "======================================================="
+    exit 1
+fi
+
+dotnet husky run --group pre-push

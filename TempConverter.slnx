@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TempConverter.App/TempConverter.App.csproj" />
+    <Project Path="src/TempConverter.Core/TempConverter.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TempConverter.App.Tests/TempConverter.App.Tests.csproj" />
+    <Project Path="tests/TempConverter.Core.Tests/TempConverter.Core.Tests.csproj" />
+  </Folder>
+</Solution>

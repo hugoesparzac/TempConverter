@@ -1,0 +1,33 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="TempConverter"
+           Manufacturer="Hugo Esparza Castaneda"
+           Version="$(var.Version)"
+           UpgradeCode="8E4F2C1A-9B3D-4E7F-A1C5-6D8E9F0A1B2C"
+           Scope="perUser">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Icon Id="AppIcon.exe" SourceFile="$(var.PublishDir)\TempConverter.exe" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon.exe" />
+
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="INSTALLFOLDER" Name="TempConverter">
+        <Component Id="MainExecutable" Guid="3A7B9C2D-5E1F-4A8B-9C6D-2E4F6A8B0C1D">
+          <File Id="TempConverterExe"
+                Source="$(var.PublishDir)\TempConverter.exe"
+                KeyPath="yes">
+            <Shortcut Id="StartMenuShortcut"
+                      Directory="ProgramMenuFolder"
+                      Name="TempConverter"
+                      WorkingDirectory="INSTALLFOLDER"
+                      Advertise="yes" />
+          </File>
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="MainFeature" Title="TempConverter" Level="1">
+      <ComponentRef Id="MainExecutable" />
+    </Feature>
+  </Package>
+</Wix>

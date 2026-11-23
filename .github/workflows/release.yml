@@ -1,0 +1,118 @@
+name: Release
+
+on:
+  push:
+    tags: [ "v*" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-unix-packages:
+    name: Build Linux & macOS Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Run Tests
+        run: dotnet test --configuration Release
+
+      - name: Install nfpm
+        run: |
+          go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Build and Package Linux & macOS
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          chmod +x scripts/publish.sh
+          ./scripts/publish.sh "${TAG#v}"
+
+      - name: Upload Unix Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: unix-packages
+          retention-days: 1
+          path: |
+            artifacts/*.tar.gz
+            artifacts/*.deb
+            artifacts/*.rpm
+            artifacts/*.pkg.tar.zst
+
+  build-windows-packages:
+    name: Build Windows Packages (.zip & .msi)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install WiX Toolset
+        run: dotnet tool install --global wix --version 5.*
+
+      - name: Publish and Package Windows
+        shell: pwsh
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          $version = $env:TAG.TrimStart('v')
+          $msiVersion = $version.Split('-')[0]
+          $pubDir = "artifacts/publish/win-x64"
+          New-Item -ItemType Directory -Force -Path $pubDir | Out-Null
+
+          dotnet publish src/TempConverter.App -c Release -r win-x64 --self-contained `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:DebugType=None -p:DebugSymbols=false `
+            -p:Version="$msiVersion" `
+            -o $pubDir
+
+          Compress-Archive -Path "$pubDir/*" -DestinationPath "artifacts/TempConverter-$version-win-x64.zip" -Force
+
+          wix build packaging/windows/Package.wxs `
+            -d Version="$msiVersion" `
+            -d PublishDir="$pubDir" `
+            -o "artifacts/TempConverter-$version-win-x64.msi"
+
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-packages
+          retention-days: 1
+          path: |
+            artifacts/*.zip
+            artifacts/*.msi
+
+  create-release:
+    name: Create GitHub Release
+    needs: [build-unix-packages, build-windows-packages]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          FLAGS=""
+          if [[ "$TAG" == *-* ]]; then FLAGS="--prerelease"; fi
+          gh release create "$TAG" release-assets/* \
+            --title "$TAG" \
+            --generate-notes \
+            $FLAGS
