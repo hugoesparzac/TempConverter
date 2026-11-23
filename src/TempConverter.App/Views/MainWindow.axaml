@@ -37,7 +37,7 @@
                    HorizontalAlignment="Center" />
 
         <Grid ColumnDefinitions="Auto,Auto"
-              RowDefinitions="Auto,Auto,Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto"
               HorizontalAlignment="Center"
               Margin="0,8,0,0">
             <TextBox x:Name="ValueInput"
@@ -88,9 +88,34 @@
                        FontSize="13"
                        HorizontalAlignment="Center"
                        Margin="0,4,0,0" />
+            <StackPanel x:Name="PrecisionStepper"
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="6"
+                        Margin="0,4,0,0">
+                <TextBlock x:Name="PrecisionStepperLabel"
+                           Text="Decimal places"
+                           VerticalAlignment="Center" />
+                <RepeatButton x:Name="DecreasePrecisionButton"
+                              Content="-"
+                              Width="30"
+                              Command="{Binding DecreasePrecisionCommand}" />
+                <TextBlock x:Name="PrecisionStepperValue"
+                           Text="{Binding Precision}"
+                           MinWidth="16"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center" />
+                <RepeatButton x:Name="IncreasePrecisionButton"
+                              Content="+"
+                              Width="30"
+                              Command="{Binding IncreasePrecisionCommand}" />
+            </StackPanel>
             <TextBlock x:Name="ValidationMessage"
                        Text="{Binding ErrorMessage}"
-                       Grid.Row="3"
+                       Grid.Row="4"
                        Grid.Column="0"
                        Grid.ColumnSpan="2"
                        Foreground="{DynamicResource ValidationErrorForegroundBrush}"
