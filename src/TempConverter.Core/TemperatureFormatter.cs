@@ -11,7 +11,8 @@ public static class TemperatureFormatter
         string specifier = precision == 0
             ? "0"
             : "0." + new string('#', precision);
-        return value.ToString(specifier, CultureInfo.InvariantCulture);
+        string formatted = value.ToString(specifier, CultureInfo.InvariantCulture);
+        return formatted == "-0" ? "0" : formatted;
     }
 
     public static string FormatOperand(double value) => value.ToString("0.#####", CultureInfo.InvariantCulture);

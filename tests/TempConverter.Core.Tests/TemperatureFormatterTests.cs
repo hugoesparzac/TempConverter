@@ -60,4 +60,14 @@ public class TemperatureFormatterTests
 
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData(-0.4, 0, "0")]
+    [InlineData(-0.004, 2, "0")]
+    public void Format_NegativeValueRoundingToZero_ReturnsUnsignedZero(double value, int precision, string expected)
+    {
+        string actual = TemperatureFormatter.Format(value, precision);
+
+        Assert.Equal(expected, actual);
+    }
 }
