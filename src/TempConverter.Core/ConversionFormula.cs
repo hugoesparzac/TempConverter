@@ -3,9 +3,12 @@ namespace TempConverter.Core;
 public static class ConversionFormula
 {
     public static string Render(double value, TemperatureScale source, TemperatureScale target)
+        => Render(value, source, target, 2);
+
+    public static string Render(double value, TemperatureScale source, TemperatureScale target, int precision)
     {
         string substituted = TemperatureFormatter.FormatOperand(value);
-        string result = TemperatureFormatter.Format(TemperatureConverter.Convert(value, source, target));
+        string result = TemperatureFormatter.Format(TemperatureConverter.Convert(value, source, target), precision);
 
         return (source, target) switch
         {

@@ -69,4 +69,21 @@ public class ConversionFormulaTests
 
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData(37.0, TemperatureScale.Celsius, TemperatureScale.Fahrenheit, 0, "°F = 37 × 9/5 + 32 = 99")]
+    [InlineData(37.0, TemperatureScale.Celsius, TemperatureScale.Fahrenheit, 6, "°F = 37 × 9/5 + 32 = 98.6")]
+    [InlineData(36.6, TemperatureScale.Celsius, TemperatureScale.Fahrenheit, 1, "°F = 36.6 × 9/5 + 32 = 97.9")]
+    [InlineData(36.6, TemperatureScale.Celsius, TemperatureScale.Fahrenheit, 0, "°F = 36.6 × 9/5 + 32 = 98")]
+    public void Render_WithPrecision_RoundsResultAndKeepsEnteredOperand(
+        double value,
+        TemperatureScale source,
+        TemperatureScale target,
+        int precision,
+        string expected)
+    {
+        string actual = ConversionFormula.Render(value, source, target, precision);
+
+        Assert.Equal(expected, actual);
+    }
 }
