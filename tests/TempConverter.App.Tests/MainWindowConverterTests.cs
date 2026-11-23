@@ -91,6 +91,64 @@ public class MainWindowConverterTests
         window.Close();
     }
 
+    [AvaloniaFact]
+    public void MainWindow_WithKelvinSelected_TypedCelsiusValue_ShowsKelvinResultLive()
+    {
+        var window = new MainWindow
+        {
+            DataContext = new MainViewModel()
+        };
+
+        window.Show();
+
+        TextBox? valueInput = window.FindControl<TextBox>("ValueInput");
+        ComboBox? targetSelector = window.FindControl<ComboBox>("TargetScaleSelector");
+        Assert.NotNull(valueInput);
+        Assert.NotNull(targetSelector);
+
+        valueInput.Text = "100";
+        targetSelector.SelectedItem = TemperatureScale.Kelvin;
+        window.UpdateLayout();
+
+        TextBlock resultBlock = window.GetVisualDescendants()
+            .OfType<TextBlock>()
+            .Single(block => block.Name == "ResultText");
+        Assert.Equal("373.15", resultBlock.Text);
+
+        window.Close();
+    }
+
+    [AvaloniaFact]
+    public void MainWindow_ChangingScaleSelector_UpdatesResultWithoutRetyping()
+    {
+        var window = new MainWindow
+        {
+            DataContext = new MainViewModel()
+        };
+
+        window.Show();
+
+        TextBox? valueInput = window.FindControl<TextBox>("ValueInput");
+        ComboBox? sourceSelector = window.FindControl<ComboBox>("SourceScaleSelector");
+        Assert.NotNull(valueInput);
+        Assert.NotNull(sourceSelector);
+
+        valueInput.Text = "100";
+        window.UpdateLayout();
+
+        TextBlock resultBlock = window.GetVisualDescendants()
+            .OfType<TextBlock>()
+            .Single(block => block.Name == "ResultText");
+        Assert.Equal("212", resultBlock.Text);
+
+        sourceSelector.SelectedItem = TemperatureScale.Kelvin;
+        window.UpdateLayout();
+
+        Assert.Equal("-279.67", resultBlock.Text);
+
+        window.Close();
+    }
+
     private static List<string> VisibleTexts(ComboBox comboBox) =>
         comboBox.GetVisualDescendants()
             .OfType<TextBlock>()
