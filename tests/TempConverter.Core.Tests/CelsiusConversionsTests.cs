@@ -13,4 +13,12 @@ public class CelsiusConversionsTests
 
         Assert.Equal(expected, actual, precision: 10);
     }
+
+    [Fact]
+    public void ToFahrenheit_AbsoluteZero_ReturnsKnownEquivalent()
+    {
+        double actual = CelsiusConversions.ToFahrenheit(-273.15);
+
+        Assert.Equal(-459.67, actual, precision: 10);
+    }
 }
