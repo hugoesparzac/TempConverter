@@ -7,7 +7,11 @@
         x:Class="TempConverter.App.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/app-icon.ico"
-        Title="TempConverter">
+        Title="TempConverter"
+        Width="480"
+        Height="320"
+        MinWidth="360"
+        MinHeight="240">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,

@@ -120,4 +120,25 @@ public class MainWindowTests
 
         window.Close();
     }
+
+    [AvaloniaFact]
+    public void MainWindow_WhenResizedToMinimumSize_KeepsContentFullyVisible()
+    {
+        var window = new MainWindow();
+
+        window.Show();
+
+        Assert.True(window.MinWidth > 0);
+        Assert.True(window.MinHeight > 0);
+
+        window.Width = window.MinWidth;
+        window.Height = window.MinHeight;
+        window.GetLayoutManager()!.ExecuteLayoutPass();
+
+        var content = (Control)window.Content!;
+        var clientBounds = new Rect(window.ClientSize);
+        Assert.True(clientBounds.Contains(content.Bounds));
+
+        window.Close();
+    }
 }
