@@ -21,7 +21,7 @@
 
     <StackPanel HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Spacing="8">
+                Spacing="12">
         <TextBlock Text="{Binding AppName}"
                    FontSize="32"
                    FontWeight="SemiBold"
@@ -29,6 +29,34 @@
         <TextBlock Text="Cross-platform temperature converter"
                    FontSize="14"
                    HorizontalAlignment="Center" />
+
+        <Grid ColumnDefinitions="Auto,Auto"
+              RowDefinitions="Auto,Auto"
+              HorizontalAlignment="Center"
+              Margin="0,8,0,0">
+            <TextBox x:Name="CelsiusInput"
+                     Grid.Row="0"
+                     Grid.Column="0"
+                     Width="120"
+                     Text="{Binding Input}" />
+            <TextBlock Text="°C"
+                       Grid.Row="0"
+                       Grid.Column="1"
+                       Margin="8,0,0,0"
+                       VerticalAlignment="Center" />
+            <TextBlock x:Name="FahrenheitResultText"
+                       Text="{Binding Result}"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Right" />
+            <TextBlock Text="°F"
+                       Grid.Row="1"
+                       Grid.Column="1"
+                       Margin="8,0,0,0"
+                       VerticalAlignment="Center" />
+        </Grid>
     </StackPanel>
 
 </Window>
