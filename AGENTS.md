@@ -36,6 +36,7 @@ Cross-platform desktop temperature converter (Windows, Linux, macOS) built with 
 - Use `CultureInfo.InvariantCulture` when parsing/formatting internal numeric strings while respecting user display formatting cleanly.
 - Never hardcode OS-specific paths, fonts, or window chrome assumptions.
 - Avalonia 12: `.WithInterFont()` only registers the Inter collection; FluentTheme supplies the Inter-first composite default font family.
+- Render enum symbols in `ComboBox`es via `ItemTemplate` + `IValueConverter` scoped to `Window.Resources`; assert item lists as `IEnumerable<object?>` because Avalonia's `ItemCollection` has nullable elements.
 
 ## Workflow & Issue Tracking (GitHub CLI)
 - Never create `backlog.md` or `plan.md`. All stories and plans live in GitHub Issues via `gh`.
