@@ -4,7 +4,7 @@ public static class ConversionFormula
 {
     public static string Render(double value, TemperatureScale source, TemperatureScale target)
     {
-        string substituted = TemperatureFormatter.Format(value);
+        string substituted = TemperatureFormatter.FormatOperand(value);
         string result = TemperatureFormatter.Format(TemperatureConverter.Convert(value, source, target));
 
         return (source, target) switch

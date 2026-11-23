@@ -44,6 +44,7 @@ public class ConversionFormulaTests
     [InlineData(TemperatureScale.Celsius, TemperatureScale.Kelvin, -273.15, "K = -273.15 + 273.15 = 0")]
     [InlineData(TemperatureScale.Kelvin, TemperatureScale.Celsius, 0.0, "°C = 0 - 273.15 = -273.15")]
     [InlineData(TemperatureScale.Celsius, TemperatureScale.Fahrenheit, 36.6, "°F = 36.6 × 9/5 + 32 = 97.88")]
+    [InlineData(TemperatureScale.Celsius, TemperatureScale.Fahrenheit, 0.0049, "°F = 0.0049 × 9/5 + 32 = 32.01")]
     public void Render_BoundaryAndDecimalValues_SubstitutesValueAndResult(
         TemperatureScale source,
         TemperatureScale target,
