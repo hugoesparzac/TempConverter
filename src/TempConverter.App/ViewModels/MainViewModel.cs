@@ -18,6 +18,8 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial TemperatureScale TargetScale { get; set; } = TemperatureScale.Fahrenheit;
 
+    public IReadOnlyList<TemperatureScale> AvailableScales { get; } = Enum.GetValues<TemperatureScale>();
+
     public string Result =>
         double.TryParse(Input.Replace(',', '.'), CultureInfo.InvariantCulture, out double value)
             ? TemperatureFormatter.Format(TemperatureConverter.Convert(value, SourceScale, TargetScale))
