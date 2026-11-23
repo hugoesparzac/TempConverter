@@ -8,6 +8,11 @@ public static class TemperatureFormatter
 
     public static string Format(double value, int precision)
     {
+        if (precision is < 0 or > 6)
+        {
+            throw new ArgumentOutOfRangeException(nameof(precision), "Precision must be between 0 and 6 decimal places.");
+        }
+
         string specifier = precision == 0
             ? "0"
             : "0." + new string('#', precision);

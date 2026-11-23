@@ -70,4 +70,12 @@ public class TemperatureFormatterTests
 
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(7)]
+    public void Format_WhenPrecisionOutsideZeroToSix_ThrowsArgumentOutOfRange(int precision)
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => TemperatureFormatter.Format(1.0, precision));
+    }
 }
