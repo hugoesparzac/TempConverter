@@ -6,8 +6,12 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TempConverter.App.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="TempConverter.App">
+        Icon="/Assets/app-icon.ico"
+        Title="TempConverter"
+        Width="480"
+        Height="320"
+        MinWidth="360"
+        MinHeight="240">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -15,8 +19,16 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <TextBox Text="{Binding Greeting}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="8">
+        <TextBlock Text="{Binding AppName}"
+                   FontSize="32"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Center" />
+        <TextBlock Text="Cross-platform temperature converter"
+                   FontSize="14"
+                   HorizontalAlignment="Center" />
+    </StackPanel>
 
 </Window>
