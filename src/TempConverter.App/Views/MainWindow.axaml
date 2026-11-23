@@ -37,7 +37,7 @@
                    HorizontalAlignment="Center" />
 
         <Grid ColumnDefinitions="Auto,Auto"
-              RowDefinitions="Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto"
               HorizontalAlignment="Center"
               Margin="0,8,0,0">
             <TextBox x:Name="ValueInput"
@@ -80,6 +80,17 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <TextBlock x:Name="ValidationMessage"
+                       Text="{Binding ErrorMessage}"
+                       Grid.Row="2"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Foreground="{DynamicResource ValidationErrorForegroundBrush}"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="260"
+                       MinHeight="20"
+                       Margin="0,4,0,0" />
         </Grid>
     </StackPanel>
 

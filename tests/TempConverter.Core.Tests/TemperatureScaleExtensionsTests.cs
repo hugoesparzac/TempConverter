@@ -13,4 +13,16 @@ public class TemperatureScaleExtensionsTests
 
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData(TemperatureScale.Celsius, -273.15)]
+    [InlineData(TemperatureScale.Fahrenheit, -459.67)]
+    [InlineData(TemperatureScale.Kelvin, 0.0)]
+    [InlineData(TemperatureScale.Rankine, 0.0)]
+    public void GetAbsoluteZeroMinimum_EachScale_ReturnsScaleMinimum(TemperatureScale scale, double expected)
+    {
+        double actual = scale.GetAbsoluteZeroMinimum();
+
+        Assert.Equal(expected, actual);
+    }
 }
