@@ -107,4 +107,39 @@ public class MainWindowFormulaTests
 
         window.Close();
     }
+
+    [AvaloniaFact]
+    public void MainWindow_WhenTargetScaleSetToSource_FormulaIsHiddenAndResultShowsValue()
+    {
+        var window = new MainWindow
+        {
+            DataContext = new MainViewModel()
+        };
+
+        window.Show();
+
+        TextBox? valueInput = window.FindControl<TextBox>("ValueInput");
+        ComboBox? targetSelector = window.FindControl<ComboBox>("TargetScaleSelector");
+        Assert.NotNull(valueInput);
+        Assert.NotNull(targetSelector);
+
+        valueInput.Text = "37";
+        window.UpdateLayout();
+
+        TextBlock? formulaBlock = window.FindControl<TextBlock>("FormulaText");
+        Assert.NotNull(formulaBlock);
+        Assert.Equal("°F = 37 × 9/5 + 32 = 98.6", formulaBlock.Text);
+
+        targetSelector.SelectedItem = TemperatureScale.Celsius;
+        window.UpdateLayout();
+
+        Assert.Equal(string.Empty, formulaBlock.Text);
+
+        TextBlock resultBlock = window.GetVisualDescendants()
+            .OfType<TextBlock>()
+            .Single(block => block.Name == "ResultText");
+        Assert.Equal("37", resultBlock.Text);
+
+        window.Close();
+    }
 }
