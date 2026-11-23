@@ -6,8 +6,8 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TempConverter.App.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="TempConverter.App">
+        Icon="/Assets/app-icon.ico"
+        Title="TempConverter">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
