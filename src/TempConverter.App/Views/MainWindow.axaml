@@ -15,8 +15,16 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <TextBox Text="{Binding Greeting}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="8">
+        <TextBlock Text="{Binding AppName}"
+                   FontSize="32"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Center" />
+        <TextBlock Text="Cross-platform temperature converter"
+                   FontSize="14"
+                   HorizontalAlignment="Center" />
+    </StackPanel>
 
 </Window>

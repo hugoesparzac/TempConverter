@@ -1,6 +1,9 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Platform;
+using Avalonia.Styling;
+using Avalonia.VisualTree;
 using TempConverter.App.ViewModels;
 using TempConverter.App.Views;
 
@@ -55,6 +58,42 @@ public class MainWindowTests
         window.Icon.Save(actualBytes);
 
         Assert.Equal(expectedBytes.ToArray(), actualBytes.ToArray());
+
+        window.Close();
+    }
+
+    [AvaloniaFact]
+    public void MainWindow_WhenShown_DisplaysAppNameWithoutTemplateGreeting()
+    {
+        var viewModel = new MainViewModel();
+        var window = new MainWindow
+        {
+            DataContext = viewModel
+        };
+
+        window.Show();
+
+        var texts = window.GetVisualDescendants()
+            .OfType<TextBlock>()
+            .Select(block => block.Text)
+            .ToList();
+
+        Assert.Contains("TempConverter", texts);
+        Assert.DoesNotContain("Welcome to Avalonia!", texts);
+
+        window.Close();
+    }
+
+    [AvaloniaFact]
+    public void App_WhenRunning_FollowsSystemThemeVariant()
+    {
+        var window = new MainWindow();
+
+        window.Show();
+
+        Application app = Application.Current!;
+        Assert.Equal(ThemeVariant.Default, app.RequestedThemeVariant);
+        Assert.Equal(app.ActualThemeVariant, window.ActualThemeVariant);
 
         window.Close();
     }
