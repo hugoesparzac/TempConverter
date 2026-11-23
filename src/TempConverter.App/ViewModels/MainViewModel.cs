@@ -25,6 +25,12 @@ public partial class MainViewModel : ViewModelBase
             ? TemperatureFormatter.Format(TemperatureConverter.Convert(value, SourceScale, TargetScale))
             : string.Empty;
 
+    public string Formula =>
+        TemperatureValidator.TryParseValue(Input, out double value)
+            && TemperatureValidator.Validate(value, SourceScale) == TemperatureValidationOutcome.Valid
+            ? ConversionFormula.Render(value, SourceScale, TargetScale)
+            : string.Empty;
+
     public string ErrorMessage =>
         string.IsNullOrEmpty(Input)
             ? string.Empty
@@ -40,14 +46,20 @@ public partial class MainViewModel : ViewModelBase
     partial void OnInputChanged(string value)
     {
         OnPropertyChanged(nameof(Result));
+        OnPropertyChanged(nameof(Formula));
         OnPropertyChanged(nameof(ErrorMessage));
     }
 
     partial void OnSourceScaleChanged(TemperatureScale value)
     {
         OnPropertyChanged(nameof(Result));
+        OnPropertyChanged(nameof(Formula));
         OnPropertyChanged(nameof(ErrorMessage));
     }
 
-    partial void OnTargetScaleChanged(TemperatureScale value) => OnPropertyChanged(nameof(Result));
+    partial void OnTargetScaleChanged(TemperatureScale value)
+    {
+        OnPropertyChanged(nameof(Result));
+        OnPropertyChanged(nameof(Formula));
+    }
 }
