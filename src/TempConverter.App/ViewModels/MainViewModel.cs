@@ -12,10 +12,20 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial string Input { get; set; } = string.Empty;
 
+    [ObservableProperty]
+    public partial TemperatureScale SourceScale { get; set; } = TemperatureScale.Celsius;
+
+    [ObservableProperty]
+    public partial TemperatureScale TargetScale { get; set; } = TemperatureScale.Fahrenheit;
+
     public string Result =>
-        double.TryParse(Input.Replace(',', '.'), CultureInfo.InvariantCulture, out double celsius)
-            ? TemperatureFormatter.Format(CelsiusConversions.ToFahrenheit(celsius))
+        double.TryParse(Input.Replace(',', '.'), CultureInfo.InvariantCulture, out double value)
+            ? TemperatureFormatter.Format(TemperatureConverter.Convert(value, SourceScale, TargetScale))
             : string.Empty;
 
     partial void OnInputChanged(string value) => OnPropertyChanged(nameof(Result));
+
+    partial void OnSourceScaleChanged(TemperatureScale value) => OnPropertyChanged(nameof(Result));
+
+    partial void OnTargetScaleChanged(TemperatureScale value) => OnPropertyChanged(nameof(Result));
 }
