@@ -9,6 +9,9 @@ updates:
       nuget-dependencies:
         patterns:
           - "*"
+    ignore:
+      - dependency-name: "xunit.v3"
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: "chore"
       include: "scope"
