@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TempConverter.Core;
@@ -8,6 +9,8 @@ public partial class MainViewModel : ViewModelBase
 {
     private const int MinPrecision = 0;
     private const int MaxPrecision = 6;
+
+    private readonly ConversionHistory _history = new();
 
     [ObservableProperty]
     public partial string AppName { get; set; } = "TempConverter";
@@ -25,6 +28,8 @@ public partial class MainViewModel : ViewModelBase
     public partial int Precision { get; set; } = 2;
 
     public IReadOnlyList<TemperatureScale> AvailableScales { get; } = Enum.GetValues<TemperatureScale>();
+
+    public ObservableCollection<ConversionHistoryEntry> History { get; } = [];
 
     public string Result =>
         TemperatureValidator.TryParseValue(Input, out double value)
@@ -92,5 +97,34 @@ public partial class MainViewModel : ViewModelBase
         {
             Precision--;
         }
+    }
+
+    [RelayCommand]
+    private void CommitConversion()
+    {
+        if (!TemperatureValidator.TryParseValue(Input, out double value)
+            || TemperatureValidator.Validate(value, SourceScale) != TemperatureValidationOutcome.Valid)
+        {
+            return;
+        }
+
+        ConversionHistoryEntry entry = new(
+            TemperatureFormatter.Format(value, Precision),
+            SourceScale,
+            TemperatureFormatter.Format(TemperatureConverter.Convert(value, SourceScale, TargetScale), Precision),
+            TargetScale);
+        _history.Add(entry);
+        History.Clear();
+        foreach (ConversionHistoryEntry item in _history.Entries)
+        {
+            History.Add(item);
+        }
+    }
+
+    [RelayCommand]
+    private void ClearHistory()
+    {
+        _history.Clear();
+        History.Clear();
     }
 }
