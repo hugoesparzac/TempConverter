@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
@@ -94,6 +95,28 @@ public class MainWindowTests
         Application app = Application.Current!;
         Assert.Equal(ThemeVariant.Default, app.RequestedThemeVariant);
         Assert.Equal(app.ActualThemeVariant, window.ActualThemeVariant);
+
+        window.Close();
+    }
+
+    [AvaloniaFact]
+    public void MainWindow_WhenShown_RendersTextWithInterFont()
+    {
+        var window = new MainWindow();
+
+        window.Show();
+
+        var blocks = window.GetVisualDescendants().OfType<TextBlock>().ToList();
+        Assert.NotEmpty(blocks);
+
+        foreach (TextBlock block in blocks)
+        {
+            Assert.Equal("Inter", block.FontFamily.Name);
+
+            var typeface = new Typeface(block.FontFamily, block.FontStyle, block.FontWeight, block.FontStretch);
+            Assert.True(FontManager.Current.TryGetGlyphTypeface(typeface, out GlyphTypeface? glyphTypeface));
+            Assert.StartsWith("Inter", glyphTypeface!.FamilyName, StringComparison.Ordinal);
+        }
 
         window.Close();
     }
