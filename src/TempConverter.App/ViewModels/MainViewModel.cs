@@ -32,14 +32,12 @@ public partial class MainViewModel : ViewModelBase
     public ObservableCollection<ConversionHistoryEntry> History { get; } = [];
 
     public string Result =>
-        TemperatureValidator.TryParseValue(Input, out double value)
-            && TemperatureValidator.Validate(value, SourceScale) == TemperatureValidationOutcome.Valid
+        TryGetValidValue(out double value)
             ? TemperatureFormatter.Format(TemperatureConverter.Convert(value, SourceScale, TargetScale), Precision)
             : string.Empty;
 
     public string Formula =>
-        TemperatureValidator.TryParseValue(Input, out double value)
-            && TemperatureValidator.Validate(value, SourceScale) == TemperatureValidationOutcome.Valid
+        TryGetValidValue(out double value)
             ? ConversionFormula.Render(value, SourceScale, TargetScale, Precision)
             : string.Empty;
 
@@ -108,8 +106,7 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void CommitConversion()
     {
-        if (!TemperatureValidator.TryParseValue(Input, out double value)
-            || TemperatureValidator.Validate(value, SourceScale) != TemperatureValidationOutcome.Valid)
+        if (!TryGetValidValue(out double value))
         {
             return;
         }
@@ -133,4 +130,8 @@ public partial class MainViewModel : ViewModelBase
         _history.Clear();
         History.Clear();
     }
+
+    private bool TryGetValidValue(out double value) =>
+        TemperatureValidator.TryParseValue(Input, out value)
+        && TemperatureValidator.Validate(value, SourceScale) == TemperatureValidationOutcome.Valid;
 }

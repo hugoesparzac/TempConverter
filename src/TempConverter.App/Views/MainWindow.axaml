@@ -29,108 +29,108 @@
         <StackPanel DockPanel.Dock="Top"
                     HorizontalAlignment="Center"
                     Spacing="12">
-        <TextBlock Text="{Binding AppName}"
-                   FontSize="32"
-                   FontWeight="SemiBold"
-                   HorizontalAlignment="Center" />
-        <TextBlock Text="Cross-platform temperature converter"
-                   FontSize="14"
-                   HorizontalAlignment="Center" />
-
-        <Grid ColumnDefinitions="Auto,Auto"
-              RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-              HorizontalAlignment="Center"
-              Margin="0,8,0,0">
-            <TextBox x:Name="ValueInput"
-                     Grid.Row="0"
-                     Grid.Column="0"
-                     Width="120"
-                     Text="{Binding Input}">
-                <TextBox.KeyBindings>
-                    <KeyBinding Gesture="Enter"
-                                Command="{Binding CommitConversionCommand}" />
-                </TextBox.KeyBindings>
-            </TextBox>
-            <ComboBox x:Name="SourceScaleSelector"
-                      Grid.Row="0"
-                      Grid.Column="1"
-                      MinWidth="76"
-                      Margin="8,0,0,0"
-                      VerticalAlignment="Center"
-                      ItemsSource="{Binding AvailableScales}"
-                      SelectedItem="{Binding SourceScale}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="core:TemperatureScale">
-                        <TextBlock Text="{Binding Converter={StaticResource ScaleSymbolConverter}}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <TextBlock x:Name="ResultText"
-                       Text="{Binding Result}"
-                       Grid.Row="1"
-                       Grid.Column="0"
-                       FontSize="20"
+            <TextBlock Text="{Binding AppName}"
+                       FontSize="32"
                        FontWeight="SemiBold"
-                       HorizontalAlignment="Right" />
-            <ComboBox x:Name="TargetScaleSelector"
-                      Grid.Row="1"
-                      Grid.Column="1"
-                      MinWidth="76"
-                      Margin="8,0,0,0"
-                      VerticalAlignment="Center"
-                      ItemsSource="{Binding AvailableScales}"
-                      SelectedItem="{Binding TargetScale}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="core:TemperatureScale">
-                        <TextBlock Text="{Binding Converter={StaticResource ScaleSymbolConverter}}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <TextBlock x:Name="FormulaText"
-                       Text="{Binding Formula}"
-                       Grid.Row="2"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       FontSize="13"
-                       HorizontalAlignment="Center"
-                       Margin="0,4,0,0" />
-            <StackPanel x:Name="PrecisionStepper"
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        Spacing="6"
-                        Margin="0,4,0,0">
-                <TextBlock x:Name="PrecisionStepperLabel"
-                           Text="Decimal places"
-                           VerticalAlignment="Center" />
-                <RepeatButton x:Name="DecreasePrecisionButton"
-                              Content="-"
-                              Width="30"
-                              Command="{Binding DecreasePrecisionCommand}" />
-                <TextBlock x:Name="PrecisionStepperValue"
-                           Text="{Binding Precision}"
-                           MinWidth="16"
-                           TextAlignment="Center"
-                           VerticalAlignment="Center" />
-                <RepeatButton x:Name="IncreasePrecisionButton"
-                              Content="+"
-                              Width="30"
-                              Command="{Binding IncreasePrecisionCommand}" />
-            </StackPanel>
-            <TextBlock x:Name="ValidationMessage"
-                       Text="{Binding ErrorMessage}"
-                       Grid.Row="4"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       Foreground="{DynamicResource ValidationErrorForegroundBrush}"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap"
-                       MaxWidth="260"
-                       MinHeight="20"
-                       Margin="0,4,0,0" />
-        </Grid>
+                       HorizontalAlignment="Center" />
+            <TextBlock Text="Cross-platform temperature converter"
+                       FontSize="14"
+                       HorizontalAlignment="Center" />
+    
+            <Grid ColumnDefinitions="Auto,Auto"
+                  RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                  HorizontalAlignment="Center"
+                  Margin="0,8,0,0">
+                <TextBox x:Name="ValueInput"
+                         Grid.Row="0"
+                         Grid.Column="0"
+                         Width="120"
+                         Text="{Binding Input}">
+                    <TextBox.KeyBindings>
+                        <KeyBinding Gesture="Enter"
+                                    Command="{Binding CommitConversionCommand}" />
+                    </TextBox.KeyBindings>
+                </TextBox>
+                <ComboBox x:Name="SourceScaleSelector"
+                          Grid.Row="0"
+                          Grid.Column="1"
+                          MinWidth="76"
+                          Margin="8,0,0,0"
+                          VerticalAlignment="Center"
+                          ItemsSource="{Binding AvailableScales}"
+                          SelectedItem="{Binding SourceScale}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="core:TemperatureScale">
+                            <TextBlock Text="{Binding Converter={StaticResource ScaleSymbolConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock x:Name="ResultText"
+                           Text="{Binding Result}"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           FontSize="20"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Right" />
+                <ComboBox x:Name="TargetScaleSelector"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          MinWidth="76"
+                          Margin="8,0,0,0"
+                          VerticalAlignment="Center"
+                          ItemsSource="{Binding AvailableScales}"
+                          SelectedItem="{Binding TargetScale}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="core:TemperatureScale">
+                            <TextBlock Text="{Binding Converter={StaticResource ScaleSymbolConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock x:Name="FormulaText"
+                           Text="{Binding Formula}"
+                           Grid.Row="2"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           FontSize="13"
+                           HorizontalAlignment="Center"
+                           Margin="0,4,0,0" />
+                <StackPanel x:Name="PrecisionStepper"
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Spacing="6"
+                            Margin="0,4,0,0">
+                    <TextBlock x:Name="PrecisionStepperLabel"
+                               Text="Decimal places"
+                               VerticalAlignment="Center" />
+                    <RepeatButton x:Name="DecreasePrecisionButton"
+                                  Content="-"
+                                  Width="30"
+                                  Command="{Binding DecreasePrecisionCommand}" />
+                    <TextBlock x:Name="PrecisionStepperValue"
+                               Text="{Binding Precision}"
+                               MinWidth="16"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center" />
+                    <RepeatButton x:Name="IncreasePrecisionButton"
+                                  Content="+"
+                                  Width="30"
+                                  Command="{Binding IncreasePrecisionCommand}" />
+                </StackPanel>
+                <TextBlock x:Name="ValidationMessage"
+                           Text="{Binding ErrorMessage}"
+                           Grid.Row="4"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Foreground="{DynamicResource ValidationErrorForegroundBrush}"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           MaxWidth="260"
+                           MinHeight="20"
+                           Margin="0,4,0,0" />
+            </Grid>
         </StackPanel>
 
         <DockPanel Margin="16,8">
