@@ -11,9 +11,9 @@
         Icon="/Assets/app-icon.ico"
         Title="TempConverter"
         Width="480"
-        Height="320"
+        Height="480"
         MinWidth="360"
-        MinHeight="240">
+        MinHeight="400">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -25,9 +25,10 @@
         <conv:TemperatureScaleSymbolConverter x:Key="ScaleSymbolConverter" />
     </Window.Resources>
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Spacing="12">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top"
+                    HorizontalAlignment="Center"
+                    Spacing="12">
         <TextBlock Text="{Binding AppName}"
                    FontSize="32"
                    FontWeight="SemiBold"
@@ -44,7 +45,12 @@
                      Grid.Row="0"
                      Grid.Column="0"
                      Width="120"
-                     Text="{Binding Input}" />
+                     Text="{Binding Input}">
+                <TextBox.KeyBindings>
+                    <KeyBinding Gesture="Enter"
+                                Command="{Binding CommitConversionCommand}" />
+                </TextBox.KeyBindings>
+            </TextBox>
             <ComboBox x:Name="SourceScaleSelector"
                       Grid.Row="0"
                       Grid.Column="1"
@@ -125,6 +131,32 @@
                        MinHeight="20"
                        Margin="0,4,0,0" />
         </Grid>
-    </StackPanel>
+        </StackPanel>
+
+        <DockPanel Margin="16,8">
+            <Grid ColumnDefinitions="*,Auto"
+                  DockPanel.Dock="Top">
+                <TextBlock x:Name="HistoryHeading"
+                           Text="History"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center" />
+                <Button x:Name="ClearHistoryButton"
+                        Grid.Column="1"
+                        Content="Clear"
+                        Command="{Binding ClearHistoryCommand}" />
+            </Grid>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="HistoryList"
+                              ItemsSource="{Binding History}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="core:ConversionHistoryEntry">
+                            <TextBlock Text="{Binding Display}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+    </DockPanel>
 
 </Window>
