@@ -86,4 +86,22 @@ public class MainViewModelPrecisionTests
         Assert.Equal("99", viewModel.Result);
         Assert.Contains(nameof(MainViewModel.Formula), notified);
     }
+
+    [Theory]
+    [InlineData(99, 6)]
+    [InlineData(-3, 0)]
+    public void Precision_SetDirectlyOutOfRange_ClampsToSupportedBounds(int requested, int expected)
+    {
+        var viewModel = new MainViewModel
+        {
+            Input = "37",
+            Precision = requested
+        };
+
+        Assert.Equal(expected, viewModel.Precision);
+
+        viewModel.CommitConversionCommand.Execute(null);
+
+        Assert.Single(viewModel.History);
+    }
 }

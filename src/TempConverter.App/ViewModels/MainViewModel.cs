@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TempConverter.Core;
@@ -8,6 +9,8 @@ public partial class MainViewModel : ViewModelBase
 {
     private const int MinPrecision = 0;
     private const int MaxPrecision = 6;
+
+    private readonly ConversionHistory _history = new();
 
     [ObservableProperty]
     public partial string AppName { get; set; } = "TempConverter";
@@ -26,15 +29,15 @@ public partial class MainViewModel : ViewModelBase
 
     public IReadOnlyList<TemperatureScale> AvailableScales { get; } = Enum.GetValues<TemperatureScale>();
 
+    public ObservableCollection<ConversionHistoryEntry> History { get; } = [];
+
     public string Result =>
-        TemperatureValidator.TryParseValue(Input, out double value)
-            && TemperatureValidator.Validate(value, SourceScale) == TemperatureValidationOutcome.Valid
+        TryGetValidValue(out double value)
             ? TemperatureFormatter.Format(TemperatureConverter.Convert(value, SourceScale, TargetScale), Precision)
             : string.Empty;
 
     public string Formula =>
-        TemperatureValidator.TryParseValue(Input, out double value)
-            && TemperatureValidator.Validate(value, SourceScale) == TemperatureValidationOutcome.Valid
+        TryGetValidValue(out double value)
             ? ConversionFormula.Render(value, SourceScale, TargetScale, Precision)
             : string.Empty;
 
@@ -72,6 +75,12 @@ public partial class MainViewModel : ViewModelBase
 
     partial void OnPrecisionChanged(int value)
     {
+        if (value is < MinPrecision or > MaxPrecision)
+        {
+            Precision = Math.Clamp(value, MinPrecision, MaxPrecision);
+            return;
+        }
+
         OnPropertyChanged(nameof(Result));
         OnPropertyChanged(nameof(Formula));
     }
@@ -93,4 +102,36 @@ public partial class MainViewModel : ViewModelBase
             Precision--;
         }
     }
+
+    [RelayCommand]
+    private void CommitConversion()
+    {
+        if (!TryGetValidValue(out double value))
+        {
+            return;
+        }
+
+        ConversionHistoryEntry entry = new(
+            TemperatureFormatter.Format(value, Precision),
+            SourceScale,
+            TemperatureFormatter.Format(TemperatureConverter.Convert(value, SourceScale, TargetScale), Precision),
+            TargetScale);
+        _history.Add(entry);
+        History.Clear();
+        foreach (ConversionHistoryEntry item in _history.Entries)
+        {
+            History.Add(item);
+        }
+    }
+
+    [RelayCommand]
+    private void ClearHistory()
+    {
+        _history.Clear();
+        History.Clear();
+    }
+
+    private bool TryGetValidValue(out double value) =>
+        TemperatureValidator.TryParseValue(Input, out value)
+        && TemperatureValidator.Validate(value, SourceScale) == TemperatureValidationOutcome.Valid;
 }
