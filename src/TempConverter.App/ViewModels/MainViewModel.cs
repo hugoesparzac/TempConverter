@@ -104,6 +104,21 @@ public partial class MainViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void SwapScales()
+    {
+        string result = Result;
+        TemperatureScale previousTarget = TargetScale;
+
+        TargetScale = SourceScale;
+        SourceScale = previousTarget;
+
+        if (!string.IsNullOrEmpty(result))
+        {
+            Input = result;
+        }
+    }
+
+    [RelayCommand]
     private void CommitConversion()
     {
         if (!TryGetValidValue(out double value))
