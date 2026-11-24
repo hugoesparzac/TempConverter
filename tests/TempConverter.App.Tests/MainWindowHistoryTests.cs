@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using TempConverter.App.ViewModels;
 using TempConverter.App.Views;
@@ -111,6 +112,34 @@ public class MainWindowHistoryTests
             .SingleOrDefault(binding => binding.Gesture?.Key == Key.Enter);
         Assert.NotNull(enterBinding);
         Assert.Same(viewModel.CommitConversionCommand, enterBinding.Command);
+
+        window.Close();
+    }
+
+    [AvaloniaFact]
+    public void MainWindow_ValueInputLostFocus_CommitsValidConversion()
+    {
+        var viewModel = new MainViewModel();
+        var window = new MainWindow
+        {
+            DataContext = viewModel
+        };
+
+        window.Show();
+
+        TextBox? valueInput = window.FindControl<TextBox>("ValueInput");
+        Assert.NotNull(valueInput);
+
+        viewModel.Input = "37";
+        valueInput.RaiseEvent(new FocusChangedEventArgs(Control.LostFocusEvent)
+        {
+            Source = valueInput,
+            OldFocusedElement = valueInput
+        });
+        window.UpdateLayout();
+
+        Assert.Single(viewModel.History);
+        Assert.Equal("37 °C → 98.6 °F", viewModel.History[0].Display);
 
         window.Close();
     }
