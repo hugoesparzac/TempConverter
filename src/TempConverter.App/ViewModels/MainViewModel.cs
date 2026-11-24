@@ -77,6 +77,12 @@ public partial class MainViewModel : ViewModelBase
 
     partial void OnPrecisionChanged(int value)
     {
+        if (value is < MinPrecision or > MaxPrecision)
+        {
+            Precision = Math.Clamp(value, MinPrecision, MaxPrecision);
+            return;
+        }
+
         OnPropertyChanged(nameof(Result));
         OnPropertyChanged(nameof(Formula));
     }
