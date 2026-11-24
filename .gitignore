@@ -526,3 +526,5 @@ appsettings.Production.json
 
 # Local AI tools cache/config
 .gemini/
+
+.codegraph
