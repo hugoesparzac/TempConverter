@@ -39,8 +39,8 @@
 
 | Platform | Build | Verified |
 | --- | --- | --- |
-| Linux x64 | `.deb`, `.rpm`, `.pkg.tar.zst`, `.tar.gz` | Yes |
-| Windows x64 | `.msi`, `.zip` | Yes |
+| Linux x64 | `.deb`, `.rpm`, `.pkg.tar.zst`, `.tar.gz` | Yes — application manually exercised on Linux |
+| Windows x64 | `.msi`, `.zip` | Partial — standalone `.exe` verified; `.msi` pending the first release |
 | macOS arm64 / x64 | `.tar.gz` | Not yet |
 
 ## Downloads
