@@ -38,7 +38,7 @@
                        HorizontalAlignment="Center" />
     
             <Grid ColumnDefinitions="Auto,Auto"
-                  RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
                   HorizontalAlignment="Center"
                   Margin="0,8,0,0">
                 <TextBox x:Name="ValueInput"
@@ -65,15 +65,26 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+                <Button x:Name="SwapScalesButton"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Content="⇅"
+                        FontSize="18"
+                        MinWidth="36"
+                        Margin="8,2,0,2"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        ToolTip.Tip="Swap scales"
+                        Command="{Binding SwapScalesCommand}" />
                 <TextBlock x:Name="ResultText"
                            Text="{Binding Result}"
-                           Grid.Row="1"
+                           Grid.Row="2"
                            Grid.Column="0"
                            FontSize="20"
                            FontWeight="SemiBold"
                            HorizontalAlignment="Right" />
                 <ComboBox x:Name="TargetScaleSelector"
-                          Grid.Row="1"
+                          Grid.Row="2"
                           Grid.Column="1"
                           MinWidth="76"
                           Margin="8,0,0,0"
@@ -88,14 +99,14 @@
                 </ComboBox>
                 <TextBlock x:Name="FormulaText"
                            Text="{Binding Formula}"
-                           Grid.Row="2"
+                           Grid.Row="3"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
                            FontSize="13"
                            HorizontalAlignment="Center"
                            Margin="0,4,0,0" />
                 <StackPanel x:Name="PrecisionStepper"
-                            Grid.Row="3"
+                            Grid.Row="4"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Orientation="Horizontal"
@@ -121,7 +132,7 @@
                 </StackPanel>
                 <TextBlock x:Name="ValidationMessage"
                            Text="{Binding ErrorMessage}"
-                           Grid.Row="4"
+                           Grid.Row="5"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
                            Foreground="{DynamicResource ValidationErrorForegroundBrush}"
