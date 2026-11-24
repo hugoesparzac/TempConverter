@@ -35,11 +35,14 @@ Cross-platform desktop temperature converter (Windows, Linux, macOS) built with 
 - Use `.WithInterFont()` in `AppBuilder` for consistent typography across Linux, macOS, and Windows.
 - Use `CultureInfo.InvariantCulture` when parsing/formatting internal numeric strings while respecting user display formatting cleanly.
 - Never hardcode OS-specific paths, fonts, or window chrome assumptions.
+- Avalonia 12: `.WithInterFont()` only registers the Inter collection; FluentTheme supplies the Inter-first composite default font family.
+- Render enum symbols in `ComboBox`es via `ItemTemplate` + `IValueConverter` scoped to `Window.Resources`; assert item lists as `IEnumerable<object?>` because Avalonia's `ItemCollection` has nullable elements.
 
 ## Workflow & Issue Tracking (GitHub CLI)
 - Never create `backlog.md` or `plan.md`. All stories and plans live in GitHub Issues via `gh`.
 - Work strictly in vertical slices (`Core logic -> ViewModel -> AXAML View -> xUnit Tests` in one issue).
 - Branch naming must match `<type>/<kebab-case-description>` (e.g., `feat/kelvin-conversion`, `fix/decimal-precision`).
+- PR titles must also follow Conventional Commits (e.g., `feat: show conversion formula`); a plain issue title fails the `Validate PR Title` CI check.
 - Never run `git commit` automatically; propose Conventional Commit messages (`feat:`, `fix:`, `test:`, `refactor:`) with a max 72-character title, a blank second line, and `Closes #<issue>` in the body.
 
 ## Commands
